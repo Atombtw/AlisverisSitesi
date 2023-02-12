@@ -1,0 +1,93 @@
+﻿@model IEnumerable<AlisverisSitesi.Models.Product>
+
+@{
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container">
+    <p>
+        <a asp-action="Create" class="btn btn-primary">Ürün Ekle</a>
+    </p>
+    <table class="table table-striped table-bordered" id="myTable">
+        <thead>
+            <tr>
+                <th>
+                    Resim
+                </th>
+                <th>
+                    Başlık
+                </th>
+                <th>
+                    Ana Sayfa
+                </th>
+                <th>
+                    Stok
+                </th>
+                <th>
+                    Kategori
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @if (item.Image == null)
+                        {
+                            <img src="~/images/image/resim-yok.jpg" width="100" height="100" />
+                        }
+                        else
+                        {
+                            <img src="@item.Image" width="100" height="100" />
+                        }
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Title)
+                    </td>                    
+                    <td>
+                        @if (item.IsHome)
+                        {
+                            <label class="btn btn-success btn-sm"><i class="bi bi-check-lg"></i> Evet</label>
+                        }
+                        else
+                        {
+                            <label class="btn btn-danger btn-sm"><i class="bi bi-x-lg"></i> Hayır</label>
+                        }
+                    </td>
+                    <td>
+                        @if (item.IsStock)
+                        {
+                            <label class="btn btn-success btn-sm"><i class="bi bi-check-lg"></i> Evet</label>
+                        }
+                        else
+                        {
+                            <label class="btn btn-danger btn-sm"><i class="bi bi-x-lg"></i> Hayır</label>
+                        }
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Category.Name)
+                    </td>
+                    <td>
+                        <a asp-action="Edit" asp-route-id="@item.Id" class="btn btn-success btn-sm"><i class="bi bi-pencil"></i></a>
+                        <a asp-action="Delete" asp-route-id="@item.Id" class="btn btn-danger btn-sm"><i class="bi bi-trash"></i></a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+@section Scripts{
+        <script type="text/javascript">
+            $(document).ready( function () {
+                $('#myTable').DataTable({
+                    "language": {
+                        "url": "//cdn.datatables.net/plug-ins/9dcbecd42ad/i18n/Turkish.json"
+                    }
+                });
+            } );
+        </script>
+}

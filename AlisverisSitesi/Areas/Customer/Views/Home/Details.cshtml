@@ -1,0 +1,86 @@
+﻿@model AlisverisSitesi.Models.ShoppingCart
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<div class="container">
+    <br />
+    <div class="row">
+        <form method="post">
+            <input hidden asp-for="ProductId" />
+            <div class="card mb-3">
+                <div class="row g-0">
+                    <div class="col-md-4">
+                          <img src="@Model.Product.Image" class="img-fluid rounded-start" alt="..." style="height:300px">
+                    </div>
+                    <div class="col-md-8">
+                        <div class="card-body">
+                            <dl class="row">
+                                  <dt class = "col-sm-3">
+            Stok
+        </dt>
+                                  <dd class = "col-sm-9">
+            @if (Model.Product.IsStock)
+                        {
+                            <label class="btn btn-success"><i class="bi bi-check-lg"></i> Var</label>
+                        }
+                        else
+                        {
+                            <label class="btn btn-danger"><i class="bi bi-x-lg"></i> Yok</label>
+                        }
+        </dd>
+                                  <dt class = "col-sm-3">
+                                    Başlık
+        </dt>
+                                  <dd class = "col-sm-9">
+                                    @Model.Product.Title
+        </dd>
+                                  <dt class="col-sm-3">
+                                    Açıklama
+                                </dt>
+                                  <dd class="col-sm-9">
+                                    @Model.Product.Description
+                                </dd>
+                                  <dt class = "col-sm-3">
+                                    Fiyat
+        </dt>
+                                  <dd class = "col-sm-9">
+                                    @Model.Product.Price.ToString("0.00") ₺
+        </dd>
+                                 <dt class="col-sm-3">
+                                                            Adet
+                                </dt>
+                                <dd class="col-sm-9">
+                                        <input asp-for="Count" />
+                               </dd>
+                            </dl>
+                         </div>
+                    </div>
+                <br />
+                <div class="col-md-3">
+
+                </div>
+                <div class="col-md-3">
+                    <a asp-action="Index" asp-controller="Home" class="btn btn-primary form-control"><i class="bi bi-house"></i> Anasayfa</a>
+                </div>
+                <div class="col-md-1">
+
+                </div>
+                <div class="col-md-3">
+                    @if (Model.Product.IsStock)
+                        {
+                            <button type="submit" class="btn btn-success form-control"><i class="bi bi-cart4"></i> Sepete Ekle</button>
+                        }
+                        else
+                        {
+                            <label class="btn btn-danger form-control"><i class="bi bi-cart4"></i> Ürün Tükendi</label>
+                        }
+                </div>
+                <div class="col-md-2">
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+

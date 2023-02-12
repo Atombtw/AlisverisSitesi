@@ -1,0 +1,105 @@
+﻿@model AlisverisSitesi.Models.OrderDetailsVM
+@{
+    ViewData["Title"] = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<form method="post">
+    <input hidden asp-for="OrderHeader.Id" />
+    <div class="container">
+        <div class="row">
+            <div class="col-md-6">
+    <div>
+    <dl class="row">
+        <dt class = "col-sm-4">
+             Adı
+        </dt>
+        <dd class = "col-sm-8">
+                @Model.OrderHeader.Name
+        </dd>
+        <dt class = "col-sm-4">
+                             Soyadı
+        </dt>
+                        <dd class = "col-sm-8">
+                            @Model.OrderHeader.Surname
+                        </dd>
+                        <dt class = "col-sm-4">
+                             Telefon
+        </dt>
+                        <dd class = "col-sm-8">
+                            @Model.OrderHeader.PhoneNumber
+                        </dd>
+                        <dt class="col-sm-4">
+                            Adres
+                        </dt>
+                        <dd class="col-sm-8">
+                            @Model.OrderHeader.Adres
+                        </dd>
+                        <dt class = "col-sm-4">
+                             Semt
+        </dt>
+                        <dd class = "col-sm-8">
+                            @Model.OrderHeader.Semt
+                        </dd>
+                        <dt class = "col-sm-4">
+                             Şehir
+        </dt>
+                        <dd class = "col-sm-8">
+                            @Model.OrderHeader.Şehir
+                        </dd>
+                        <dt class = "col-sm-4">
+                             Posta Kodu
+        </dt>
+                        <dd class = "col-sm-8">
+                            @Model.OrderHeader.PostaKodu
+                        </dd>
+                        <dt class = "col-sm-4">
+                             Sipariş Tarihi
+        </dt>
+                        <dd class = "col-sm-8">
+                            @Model.OrderHeader.OrderDate.ToShortDateString()
+                        </dd>
+    </dl>
+    </div>
+    </div>
+            <div class="col-md-6">
+                <div class="col-md-12">
+                    <ul class="list-group mb-3">
+                        @foreach (var item in Model.OrderDetails)
+                        {
+                            <li class="list-group-item d-flex justify-content-between lh-sm">
+                                <div>
+                                    <h6 class="my-0">@item.Product.Title</h6>
+                                    <small class="text-muted">Adet : @item.Count</small>
+                                </div>
+                                <span class="text-muted">@((item.Count * item.Product.Price).ToString("0.00")) ₺</span>
+                            </li>
+                        }
+                        <li class="list-group-item d-flex justify-content-between bg-light">
+                            <div class="text-success">
+                                <h6 class="my-0">Toplam Tutar : </h6>
+                            </div>
+                            <span class="text-success">@(Model.OrderHeader.OrderTotal.ToString("0.00")) ₺</span>
+                        </li>
+                    </ul>
+                    @if (User.IsInRole(Diger.Role_Admin))
+                    {
+                        <br />
+                        if (Model.OrderHeader.OrderStatus == Diger.Durum_Onaylandı)
+                        {
+                            <input type="submit" value="Kargoya  Ver" class="btn btn-primary form-control" formaction="/Admin/Order/KargoyaVer" formmethod="post" />
+                        }
+                        if (Model.OrderHeader.OrderStatus == Diger.Durum_Beklemede)
+                        {
+                            <input type="submit" value="Onayla" class="btn btn-primary form-control" formaction="/Admin/Order/Onaylandi" formmethod="post" />
+                        }
+                    }
+                    else
+                    {
+                        <label class="btn btn-primary form-control">@Model.OrderHeader.OrderStatus</label>
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</form>

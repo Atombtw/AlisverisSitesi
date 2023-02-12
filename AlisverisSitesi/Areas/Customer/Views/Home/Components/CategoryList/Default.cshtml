@@ -1,0 +1,12 @@
+﻿@model IEnumerable<AlisverisSitesi.Models.Category>
+        <div class="col-md-3">
+            <div class="card">
+                <ul class="list-group">
+            <a asp-action="Index" asp-controller="Home" class="list-group-item @(ViewBag.KategoriId == null?"active":"")" aria-current="true">Tüm Ürünler</a>
+                    @foreach (var item in Model)
+            {
+                    <a asp-action="CategoryDetails" class="list-group-item @(ViewBag.KategoriId?.ToString() == item.Id.ToString()?"active":"")" asp-route-id="@item.Id">@item.Name</a>
+            }
+                </ul>
+            </div>
+        </div>

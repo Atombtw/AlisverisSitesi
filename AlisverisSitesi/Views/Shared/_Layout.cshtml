@@ -1,0 +1,103 @@
+﻿@using AlisverisSitesi.Models
+@using Microsoft.AspNetCore.Http
+@inject IHttpContextAccessor HttpContextAccessor
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - AlisverisSitesi</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.2/font/bootstrap-icons.css" />
+    <link rel="stylesheet" href="https://cdn.datatables.net/1.13.1/css/jquery.dataTables.min.css" />
+</head>
+<body>
+    <header>
+        <div class="container">
+            <br />
+            <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-dark bg-dark border-bottom box-shadow mb-3">
+                <div class="container">
+                    <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">
+                        <img style="width: 50px; height: 50px;" src="~/images/image/untitled-2.png" />
+                        Kadir <span style="color: red;">Shop</span>
+                    </a>
+                    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                            aria-expanded="false" aria-label="Toggle navigation">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                        <ul class="navbar-nav flex-grow-1">
+                            <li class="nav-item">
+                                <a class="nav-link text-white" asp-area="" asp-controller="Home" asp-action="Index">Ana Sayfa</a>
+                            </li>
+                            @if (User.IsInRole(Diger.Role_Admin))
+                            {
+                                <li class="nav-item dropdown">
+                                    <a class="nav-link dropdown-toggle text-white" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                                        Admin Paneli
+                                    </a>
+                                    <ul class="dropdown-menu">
+                                        <li><a class="dropdown-item" asp-area="Admin" asp-controller="Category" asp-action="Index">Kategoriler</a></li>
+                                        <li><a class="dropdown-item" asp-area="Admin" asp-controller="Product" asp-action="Index">Ürünler</a></li>
+                                        <li><a class="dropdown-item" asp-area="Admin" asp-controller="User" asp-action="Index">Kullanıcılar</a></li>
+                                        <li><a class="dropdown-item" asp-area="Admin" asp-controller="Order" asp-action="Index">Siparişler</a></li>
+                                    </ul>
+                                </li>
+                            }
+                            else if (User.Identity.IsAuthenticated)
+                            {
+                                <li class="nav-item">
+                                    <a class="nav-link text-white" asp-area="Admin" asp-controller="Order" asp-action="Index">Siparişler</a>
+                                </li>
+                            }
+                            @if (User.Identity.IsAuthenticated && HttpContextAccessor.HttpContext.Session.GetInt32(Diger.ssShoppingCart) != null)
+                            {
+                                <li style="color:white">
+                                    <a asp-area="Customer" asp-controller="Cart" asp-action="Index" class="nav-link text-white">
+                                        @{
+                                            var count = HttpContextAccessor.HttpContext.Session.GetInt32(Diger.ssShoppingCart);
+                                        }
+                                        <i class="bi bi-cart2"></i>(@count)
+                                    </a>
+                                </li>
+                            }
+                            else
+                            {
+                                <li style="color:white">
+                                    <a href="/Identity/Account/Login" class="nav-link text-white">
+                                        <i class="bi bi-cart2"></i>(0)
+                                    </a>
+                                </li>
+                            }
+                        </ul>
+                        <form class="form-inline" action="/Customer/Home/Search" method="post" style="margin-right:0.5rem">
+                            <input name="q" type="text" class="form-control mr-2" placeholder="Arama"/>
+                            <button class="btn btn-outline-info mr-2" type="submit"><i class="bi bi-search"></i> Ara</button>
+                        </form>
+                        <partial name="_LoginPartial" />
+                    </div>
+                </div>
+            </nav>
+        </div>
+    </header>
+    <div class="container">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+    <footer class="border-top footer text-muted">
+        <div class="container">
+            &copy; 2022 - AlisverisSitesi - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+        </div>
+    </footer>
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/js/bootstrap.bundle.min.js" integrity="sha384-w76AqPfDkMBDXo30jS1Sgez6pr3x5MlQ1ZAGC+nuZB+EYdgRZgiwxhTBTkF7CXvN" crossorigin="anonymous"></script>
+    <script src="https://cdn.datatables.net/1.13.1/js/jquery.dataTables.min.js"></script>
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

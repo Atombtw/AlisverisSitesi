@@ -1,0 +1,32 @@
+﻿@model IEnumerable<AlisverisSitesi.Models.Product>
+
+@{
+    ViewData["Title"] = "Home Page";
+}
+
+<div class="container">
+    <div class="row">
+        @await Component.InvokeAsync("CategoryList")
+        @foreach (var item in Model)
+        {
+            @if (item.IsStock == true)
+            {
+                <div class="col-md-3" style="padding-bottom: 15px">
+                    <div class="card">
+                        <div class="card-header">
+                            @item.Title
+                        </div>
+                        <img src="@item.Image" class="card-img-top" alt="..." style="height: 200px">
+                        <div class="card-body">
+                            <p class="card-text">@item.Description</p>
+                        </div>
+                        <div class="card-footer">
+                            <label style="font-size:20px; color:crimson"><b>@item.Price.ToString("0.00")₺</b></label>
+                            <a asp-action="Details" asp-controller="Home" asp-route-id="@item.Id" class="btn btn-outline-info" style="float:right"> Detay</a>
+                        </div>
+                    </div>
+                </div>
+            }
+        }
+    </div>
+</div>
